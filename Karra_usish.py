@@ -20,7 +20,7 @@ async def get_start(message: types.Message, state: FSMContext):
     if args == "1":
         await message.answer("Deeplink")
         await message.answer("Рахмат, энди, телефон опросдан отинг.")
-        await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, {{name}}! "
+        await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат! "
                              "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
                              "🔗 https://t.me/+tkXweoTohw1lODhi. Keyingi savollarga javob berishga tayormisiz",
                              reply_markup=question1)
@@ -42,7 +42,7 @@ async def get_start(message: types.Message, state: FSMContext):
 async def get_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['name'] = message.text
-        await message.answer(f"📞 Rahmat, {data["name"]}! Endi, iltimos, telefon "
+        await message.answer(f"📞 Rahmat, {data['name']}! Endi, iltimos, telefon "
                              f"raqamingizni pastdagi tugma orqali ulashing.", reply_markup=contact_button)
     await Registration.next()
 
@@ -54,7 +54,7 @@ async def get_number(message: types.Message, state: FSMContext):
         data['number'] = message.text or message.contact.phone_number
         number = data['number']
         create_contact(data['name'], data['number'])
-    await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, {{name}}! "
+    await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, "
                          "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
                          "🔗 https://t.me/+tkXweoTohw1lODhi. Keyingi savollarga javob berishga tayormisiz",
                          reply_markup=question1)
