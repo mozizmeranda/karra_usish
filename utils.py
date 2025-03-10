@@ -14,11 +14,11 @@ tokens.default_token_manager(
     )
 
 
-voronka_id = 9317886
 
 
 class Contact(_Contact):
-    num_employees = custom_field.TextCustomField("рабочие")
+    empl = custom_field.TextCustomField("рабочие")
+    num_employees = custom_field.TextCustomField("num_emploeyes")
     turnover = custom_field.TextCustomField("оборот")
     role = custom_field.TextCustomField("роль")
     number = custom_field.ContactPhoneField(name="Телефон")
@@ -39,6 +39,7 @@ def create_contact(name: str, number: str):
 def contact_save(num_emploeyes: str, turnover: str, role: str, number: str):
     contact = Contact.objects.get(query=number)
     contact.num_emploeyes = num_emploeyes
+    contact.empl = num_emploeyes
     contact.turnover = turnover
     contact.role = role
     contact.save()
@@ -47,7 +48,7 @@ def contact_save(num_emploeyes: str, turnover: str, role: str, number: str):
 def lead_create_without_landing(phone_number, name):
     lead = Lead.objects.create(
         name=name,
-        pipeline_id=voronka_id,
+        pipeline_id=int(voronka_id),
     )
     contact = Contact.objects.get(query=phone_number)
     lead.contacts.add(contact)
