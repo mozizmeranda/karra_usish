@@ -18,7 +18,6 @@ dp = Dispatcher(bot, storage=storage)
 async def get_start(message: types.Message, state: FSMContext):
     args = message.get_args()
     if args:
-        await message.answer("Рахмат, энди, телефон опросдан отинг.")
         await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат! "
                              "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
                              "🔗 https://t.me/+tkXweoTohw1lODhi. Keyingi savollarga javob berishga tayormisiz",
