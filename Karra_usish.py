@@ -20,11 +20,12 @@ async def get_start(message: types.Message, state: FSMContext):
     if args:
         await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат! "
                              "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
-                             "🔗 https://t.me/+tkXweoTohw1lODhi. Keyingi savollarga javob berishga tayormisiz",
+                             "🔗 https://t.me/+tkXweoTohw1lODhi.Бизнинг вебинарга яхшироқ "
+                             "тайёргарлик кўриш учун, компаниянгизда нечта ходим ишлайди?",
                              reply_markup=question1)
         await Registration.num_emploeyes.set()
         d = args.split("--")
-
+        print(d)
         l = {
             "name": d[0],
             "number": f"+{d[1]}"
@@ -53,15 +54,14 @@ async def get_name(message: types.Message, state: FSMContext):
 
 @dp.message_handler(content_types=types.ContentTypes.ANY, state=Registration.phone)
 async def get_number(message: types.Message, state: FSMContext):
-    number = None
     async with state.proxy() as data:
         data['number'] = message.text or message.contact.phone_number
         create_contact(data['name'], data['number'])
     await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, "
                          "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
-                         "🔗 https://t.me/+tkXweoTohw1lODhi. Keyingi savollarga javob berishga tayormisiz",
+                         "🔗 https://t.me/+tkXweoTohw1lODhi. Компаниянгизда нечта ходим ишлайди.",
                          reply_markup=question1)
-    await Registration.num_emploeyes.set()
+    await Registration.next()
 
 
 @dp.callback_query_handler(lambda x: x.data and x.data.startswith("q_"), state=Registration.num_emploeyes)
