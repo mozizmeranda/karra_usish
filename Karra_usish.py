@@ -30,13 +30,6 @@ async def on_startup(dispatcher):
     await on_startup_notify(dispatcher)
 
 
-@dp.message_handler(commands="sql")
-async def get_all_users(message: types.Message):
-    data = database.get_all_users()
-    for i in data:
-        await message.answer(i)
-
-
 async def send_message(user_id, message: types.Message):
     try:
         if message.photo:
@@ -61,8 +54,11 @@ async def send_message(user_id, message: types.Message):
 
 @dp.message_handler(commands=['rs'])
 async def broadcast(message: types.Message, state: FSMContext):
-    await state.set_state("broadcast")
-    await message.reply("Текст, фото или видео для рассылки(1 штуку только).")
+    if message.from_user.id in [3325847, 6287458105, 827950639]:
+        await state.set_state("broadcast")
+        await message.reply("Текст, фото или видео для рассылки(1 штуку только).")
+    else:
+        await message.reply("Вы не админ.")
 
 
 @dp.message_handler(content_types=types.ContentTypes.ANY, state="broadcast")
@@ -118,7 +114,6 @@ async def get_start(message: types.Message, state: FSMContext):
                              reply_markup=question1)
         await Registration.num_emploeyes.set()
         d = args.split("--")
-        print(d)
         l = {
             "name": d[0],
             "number": f"+{d[1]}"
