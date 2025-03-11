@@ -30,28 +30,6 @@ async def on_startup(dispatcher):
     await on_startup_notify(dispatcher)
 
 
-async def send_message(user_id, message: types.Message):
-    try:
-        if message.photo:
-            print(message.photo[0].file_id)
-            await bot.send_photo(
-                user_id,
-                message.photo[0].file_id,
-                caption=message.caption if message.caption else ""
-            )
-        elif message.video:
-            print(message.video.file_id)
-            await bot.send_video(
-                user_id,
-                message.video.file_id,
-                caption=message.caption if message.caption else ""
-            )
-        else:
-            await bot.send_message(user_id, message.text)
-    except Exception as e:
-        print(f"Не удалось отправить сообщение пользователю {user_id}: {e}")
-
-
 @dp.message_handler(commands=['rs'])
 async def broadcast(message: types.Message, state: FSMContext):
     if message.from_user.id in [3325847, 6287458105, 827950639]:
@@ -109,9 +87,12 @@ async def get_start(message: types.Message, state: FSMContext):
         await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат! "
                              "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, "
                              "бизнинг Telegram гуруҳимизга қўшилинг: "
-                             "🔗 https://t.me/+tkXweoTohw1lODhi. Бизнинг вебинарга яхшироқ "
-                             "тайёргарлик кўриш учун, компаниянгизда нечта ходим ишлайди?",
-                             reply_markup=question1)
+                             "🔗 https://t.me/+tkXweoTohw1lODhi.")
+        await message.answer(
+            " Бизнинг вебинарга яхшироқ "
+            "тайёргарлик кўриш учун, компаниянгизда нечта ходим ишлайди?",
+            reply_markup=question1
+        )
         await Registration.num_emploeyes.set()
         d = args.split("--")
         l = {
@@ -149,7 +130,8 @@ async def get_number(message: types.Message, state: FSMContext):
     await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, "
                          "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
                          "🔗 https://t.me/+tkXweoTohw1lODhi. "
-                         "Бизнинг вебинарга яхшироқ тайёргарлик кўриш учун, компаниянгизда нечта ходим ишлайди?",
+                         )
+    await message.answer("Бизнинг вебинарга яхшироқ тайёргарлик кўриш учун, компаниянгизда нечта ходим ишлайди?",
                          reply_markup=question1)
     await Registration.next()
 
