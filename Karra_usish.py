@@ -123,7 +123,7 @@ async def get_name(message: types.Message, state: FSMContext):
 async def get_number(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['number'] = message.text or message.contact.phone_number
-        # create_contact(data['name'], data['number'])
+        create_contact(data['name'], data['number'])
         database.insert_into(message.from_user.id, data['name'], data['number'])
     await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, "
                          "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
