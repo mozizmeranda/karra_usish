@@ -3,3 +3,6 @@
 access_token.txt
 
 refresh_token.txt
+
+users.db
+test.py
