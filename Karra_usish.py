@@ -77,6 +77,7 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
 
     # await asyncio.gather(*tasks)
     await message.answer("Рассылка завершена!")
+    users = None
     await state.finish()
 
 
@@ -98,7 +99,8 @@ async def get_start(message: types.Message, state: FSMContext):
         d = args.split("--")
         l = {
             "name": d[0],
-            "number": f"+{d[1]}"
+            "number": f"+{d[1]}",
+            "from_landing": 1
         }
         database.insert_into(message.from_user.id, d[0], f"+{d[1]}")
 
@@ -126,6 +128,7 @@ async def get_name(message: types.Message, state: FSMContext):
 async def get_number(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['number'] = message.text or message.contact.phone_number
+        data['from_landing'] = 0
         create_contact(data['name'], data['number'])
         database.insert_into(message.from_user.id, data['name'], data['number'])
     await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, "
@@ -166,17 +169,20 @@ async def get_turnover(call: types.CallbackQuery, state: FSMContext):
 
     async with state.proxy() as data:
         data['role'] = ans
-        msg = await call.message.answer("Илтимос, бироз кутинг ......")
+        msg = await call.answer("Илтимос, бироз кутинг ......")
         contact_save(
             num_emploeyes=data['num_emploeyes'],
             turnover=data['turnover'],
             role=data['role'],
             number=data['number']
         )
-        lead_create_without_landing(data['number'], data['number'])
+        if data['from_landing'] == 1:
+            await call.message.answer("CALL")
+            lead_create_without_landing(data['number'], data['number'])
+        # await bot.delete_message(call.message.from_user.id, msg.message_id)
         await call.message.answer("Жавобларингиз учун раҳмат! Биз ишонамизки, "
                                   "вебинаримиз айнан сиз учун мос. Вебинарда кўришгунча!")
-        await bot.delete_message(call.message.from_user.id, msg.message_id)
+
     await state.finish()
 
     # await state.finish()
