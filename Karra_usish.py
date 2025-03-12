@@ -177,7 +177,6 @@ async def get_turnover(call: types.CallbackQuery, state: FSMContext):
             number=data['number']
         )
         if data['from_landing'] == 1:
-            await call.message.answer("CALL")
             lead_create_without_landing(data['number'], data['number'])
         # await bot.delete_message(call.message.from_user.id, msg.message_id)
         await call.message.answer("Жавобларингиз учун раҳмат! Биз ишонамизки, "
