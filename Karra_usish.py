@@ -93,6 +93,7 @@ async def get_start(message: types.Message, state: FSMContext):
             "тайёргарлик кўриш учун, компаниянгизда нечта ходим ишлайди?",
             reply_markup=question1
         )
+        msg = await message.answer("Илтимос, бироз кутинг ......")
         await Registration.num_emploeyes.set()
         d = args.split("--")
         l = {
@@ -100,9 +101,11 @@ async def get_start(message: types.Message, state: FSMContext):
             "number": f"+{d[1]}"
         }
         database.insert_into(message.from_user.id, d[0], f"+{d[1]}")
-        create_contact(d[0], d[1])
-        await state.set_data(l)
 
+        create_contact(d[0], d[1])
+        lead_create_without_landing(d[1], d[1])
+        await bot.delete_message(message.from_user.id, msg.message_id)
+        await state.set_data(l)
     else:
         text = """📢 Ассалому алайкум! 26-март куни соат 14:00 да Барно Турсунова билан "Тўғри мотивация тизими ёрдамида компания фойдасини қандай ошириш мумкин" мавзусидаги вебинарга рўйхатдан ўтиш учун, илтимос, маълумотларингизни юборинг."""
         await message.answer(text=text)
@@ -160,8 +163,10 @@ async def get_turnover(call: types.CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(lambda x: x.data and x.data.startswith("q_"), state=Registration.role)
 async def get_turnover(call: types.CallbackQuery, state: FSMContext):
     ans = call.data.split("_")[1]
+
     async with state.proxy() as data:
         data['role'] = ans
+        msg = await call.message.answer("Илтимос, бироз кутинг ......")
         contact_save(
             num_emploeyes=data['num_emploeyes'],
             turnover=data['turnover'],
@@ -171,6 +176,7 @@ async def get_turnover(call: types.CallbackQuery, state: FSMContext):
         lead_create_without_landing(data['number'], data['number'])
         await call.message.answer("Жавобларингиз учун раҳмат! Биз ишонамизки, "
                                   "вебинаримиз айнан сиз учун мос. Вебинарда кўришгунча!")
+        await bot.delete_message(call.message.from_user.id, msg.message_id)
     await state.finish()
 
     # await state.finish()
