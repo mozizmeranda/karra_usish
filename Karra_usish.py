@@ -126,11 +126,14 @@ async def get_name(message: types.Message, state: FSMContext):
 
 @dp.message_handler(content_types=types.ContentTypes.ANY, state=Registration.phone)
 async def get_number(message: types.Message, state: FSMContext):
+    msg = await message.answer("Илтимос, бироз кутинг ......")
     async with state.proxy() as data:
         data['number'] = message.text or message.contact.phone_number
         data['from_landing'] = 0
         create_contact(data['name'], data['number'])
+        lead_create_without_landing(data['name'], data['number'])
         database.insert_into(message.from_user.id, data['name'], data['number'])
+    await bot.delete_message(message.from_user.id, msg.message_id)
     await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат, "
                          "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, бизнинг Telegram гуруҳимизга қўшилинг: "
                          "🔗 https://t.me/+tkXweoTohw1lODhi. "
@@ -176,8 +179,8 @@ async def get_(call: types.CallbackQuery, state: FSMContext):
             role=data['role'],
             number=data['number']
         )
-        if data['from_landing'] == 0:
-            lead_create_without_landing(data['number'], data['number'])
+        # if data['from_landing'] == 0:
+        #     lead_create_without_landing(data['number'], data['number'])
         # await bot.delete_message(call.message.from_user.id, msg.message_id)
         await call.message.answer("Жавобларингиз учун раҳмат! Биз ишонамизки, "
                                   "вебинаримиз айнан сиз учун мос. Вебинарда кўришгунча!")
