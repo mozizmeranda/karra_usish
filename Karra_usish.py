@@ -164,7 +164,7 @@ async def get_turnover(call: types.CallbackQuery, state: FSMContext):
 
 
 @dp.callback_query_handler(lambda x: x.data and x.data.startswith("q_"), state=Registration.role)
-async def get_turnover(call: types.CallbackQuery, state: FSMContext):
+async def get_(call: types.CallbackQuery, state: FSMContext):
     ans = call.data.split("_")[1]
 
     async with state.proxy() as data:

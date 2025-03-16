@@ -6,10 +6,10 @@ from config import *
 
 
 tokens.default_token_manager(
-        client_id=client_id,
-        client_secret=client_secret,
-        subdomain=subdomain,
-        redirect_url="https://ya.ru/",
+        client_id="5e06977f-49c5-4495-bd99-95e9e974ad9d",
+        client_secret="D5GFWfBcmlFcB9G27IkO3RHruPgwLw2twoUmwKiTns1kphyfj6EpBRpBgjeZkTEf",
+        subdomain="pomidorvdele",
+        redirect_url="https://meme.com/",
         storage=tokens.FileTokensStorage(),
     )
 
@@ -60,6 +60,4 @@ def lead_create_without_landing(phone_number, name):
 # c = Contact.objects.get(query="+998999999990")
 # leads.contacts.add(c)
 # leads.save()
-
-
 
