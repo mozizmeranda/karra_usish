@@ -176,7 +176,7 @@ async def get_(call: types.CallbackQuery, state: FSMContext):
             role=data['role'],
             number=data['number']
         )
-        if data['from_landing'] == 1:
+        if data['from_landing'] == 0:
             lead_create_without_landing(data['number'], data['number'])
         # await bot.delete_message(call.message.from_user.id, msg.message_id)
         await call.message.answer("Жавобларингиз учун раҳмат! Биз ишонамизки, "
