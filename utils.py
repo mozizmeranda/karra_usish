@@ -6,10 +6,10 @@ from config import *
 
 
 tokens.default_token_manager(
-        client_id="5e06977f-49c5-4495-bd99-95e9e974ad9d",
-        client_secret="D5GFWfBcmlFcB9G27IkO3RHruPgwLw2twoUmwKiTns1kphyfj6EpBRpBgjeZkTEf",
-        subdomain="pomidorvdele",
-        redirect_url="https://meme.com/",
+        client_id=client_id,
+        client_secret=client_secret,
+        subdomain=subdomain,
+        redirect_url="https://ya.ru/",
         storage=tokens.FileTokensStorage(),
     )
 
