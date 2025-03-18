@@ -42,6 +42,11 @@ class Database:
         data = self.execute(sql, fetchall=True)
         return data
 
+    def get_all_data(self):
+        sql = "SELECT * FROM Users"
+        data = self.execute(sql, fetchall=True)
+        return data
+
 
 database = Database()
 

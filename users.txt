@@ -1,0 +1,16 @@
+ID == 827950639 -- Name == Umar Kha -- Number == +998939845661
+ID == 827950639 -- Name == Umar Kham -- Number == +998939845661
+ID == 827950639 -- Name == /start -- Number == +998939845661
+ID == 827950639 -- Name == /start -- Number == +998939845661
+ID == 827950639 -- Name == Umar Kham -- Number == +998939845661
+ID == 827950639 -- Name == Umar -- Number == +998939845661
+ID == 827950639 -- Name == mozizmeranda -- Number == +998993275661
+ID == 827950639 -- Name == mozizmeranda -- Number == +998993275661
+ID == 827950639 -- Name == mozizmeranda -- Number == +998999999999
+ID == 827950639 -- Name == mozizmeranda -- Number == +998999999999
+ID == 827950639 -- Name == mozizmeranda -- Number == +998999999999
+ID == 827950639 -- Name == mozizmeranda -- Number == +998999999999
+ID == 827950639 -- Name == mozizmeranda -- Number == +998999999999
+ID == 827950639 -- Name == mozizmeranda -- Number == +998999999999
+ID == 827950639 -- Name == mozizmeranda -- Number == +998999999999
+ID == 827950639 -- Name == Умар -- Number == 998939845661

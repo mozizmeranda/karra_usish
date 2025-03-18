@@ -8,6 +8,7 @@ from utils import contact_save, create_contact, lead_create_without_landing
 from keyboards import contact_button, question1, question2, question3
 from config import *
 import asyncio
+from aiogram.types import InputFile
 import aiogram
 from db_setting import database
 
@@ -41,11 +42,14 @@ async def broadcast(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands=['all'])
 async def get_all(message: types.Message):
-    users = database.get_all_users()
+    users = database.get_all_data()
     msg = ""
+    file_path = "users.txt"
     for i in users:
-        msg += f"ID == {i[0]}"
-    await message.reply(msg)
+        msg += f"ID == {i[0]} -- Name == {i[1]} -- Number == {i[2]}\n"
+    with open("users.txt", "w") as f:
+        f.write(msg)
+    await message.answer_document(InputFile(file_path))
 
 
 @dp.message_handler(content_types=types.ContentTypes.ANY, state="broadcast")
