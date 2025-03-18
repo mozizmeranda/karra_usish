@@ -12,7 +12,7 @@ with open("add_to_db.txt", "r", encoding="utf-8") as file:
             phone = parts[2]
 
 
-            cursor.execute("INSERT OR IGNORE INTO users (id, name, phone) VALUES (?, ?, ?)",
+            cursor.execute("INSERT OR IGNORE INTO users (id, name, number) VALUES (?, ?, ?)",
                            (user_id, name, phone))
 
 conn.commit()
