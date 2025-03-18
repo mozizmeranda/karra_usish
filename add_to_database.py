@@ -3,7 +3,7 @@ import sqlite3
 conn = sqlite3.connect("users.db")
 cursor = conn.cursor()
 
-with open("users.txt", "r", encoding="utf-8") as file:
+with open("add_to_db.txt", "r", encoding="utf-8") as file:
     for line in file:
         parts = line.strip().split(" ")  # Разделяем строку по пробелам
         if len(parts) >= 3:
