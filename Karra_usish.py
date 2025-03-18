@@ -44,7 +44,7 @@ async def get_all(message: types.Message):
     users = database.get_all_users()
     msg = ""
     for i in users:
-        msg += f"ID == {i}"
+        msg += f"ID == {i[0]}"
     await message.reply(msg)
 
 

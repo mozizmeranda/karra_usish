@@ -45,9 +45,7 @@ class Database:
 
 database = Database()
 
-users = database.get_all_users()
-for i in users:
-    print(i)
+
 
 
 
