@@ -52,6 +52,23 @@ async def get_all(message: types.Message):
     await message.answer_document(InputFile(file_path))
 
 
+@dp.message_handler(commands=['add'])
+async def add_user(message: types.Message, state: FSMContext):
+    await state.set_state("add")
+    await message.reply("Отправь пользователя")
+
+
+@dp.message_handler(state="add")
+async def insert(message: types.Message, state: FSMContext):
+    if message.text == "stop":
+        await state.finish()
+        return 1
+    lst = message.text.split(" ")
+    print(lst)
+    database.insert_into(lst[0], lst[1], lst[2])
+    await message.reply("Добавилось")
+
+
 @dp.message_handler(content_types=types.ContentTypes.ANY, state="broadcast")
 async def broadcast_handler(message: types.Message, state: FSMContext):
     tasks = []
