@@ -69,10 +69,20 @@ async def insert(message: types.Message, state: FSMContext):
     await message.reply("Добавилось")
 
 
-@dp.message_handler(state="broadcast")
+@dp.message_handler(content_types=types.ContentTypes.ANY, state="broadcast")
 async def broadcast_handler(message: types.Message, state: FSMContext):
+
     users = set(database.get_all_users())
     msg = ""
+    if message.photo:
+        for i in users:
+            try:
+                await bot.send_photo(
+                    chat_id=i[0],
+                    photo=message.photo[-1].file_id
+                )
+            except Exception as e:
+                pass
     for i in users:
         try:
             await bot.send_message(
