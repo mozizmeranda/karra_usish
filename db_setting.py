@@ -47,6 +47,11 @@ class Database:
         data = self.execute(sql, fetchall=True)
         return data
 
+    def get_user_by_id(self, id: int):
+        sql = "SELECT * FROM Users WHERE id=?"
+        data = self.execute(sql, (id,), fetchone=True)
+        return data
+
 
 database = Database()
 

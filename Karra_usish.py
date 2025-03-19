@@ -12,7 +12,7 @@ from aiogram.types import InputFile
 import aiogram
 from db_setting import database
 
-bot = Bot(token=token)
+bot = Bot(token=token, parse_mode="HTML")
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 # voronka_id = 9317886
@@ -35,7 +35,7 @@ async def on_startup(dispatcher):
 async def broadcast(message: types.Message, state: FSMContext):
     if message.from_user.id in [3325847, 6287458105, 827950639]:
         await state.set_state("broadcast")
-        await message.reply("Текст, фото или видео для рассылки(1 штуку только).")
+        await message.reply("Введите текст для рассылки.")
     else:
         await message.reply("Вы не админ.")
 
@@ -69,45 +69,26 @@ async def insert(message: types.Message, state: FSMContext):
     await message.reply("Добавилось")
 
 
-@dp.message_handler(content_types=types.ContentTypes.ANY, state="broadcast")
+@dp.message_handler(state="broadcast")
 async def broadcast_handler(message: types.Message, state: FSMContext):
-    tasks = []
-    users = database.get_all_users()
-    try:
-        if message.photo:
-            for i in users:
-                await bot.send_message(i[0], "Hello")
-                await bot.send_photo(
-                    i[0],
-                    message.photo[-1].file_id,
-                    caption=message.caption
-                )
-        if message.video:
-            for i in users:
-                await bot.send_video(
-                    i[0],
-                    video=message.video.file_id,
-                    caption=message.caption
-                )
-        if message.location:
-            for i in users:
-                await bot.send_location(
-                    i[0],
-                    latitude=message.location.latitude,
-                    longitude=message.location.longitude
-                )
-        else:
-            for i in users:
-                await bot.send_message(
-                    i[0],
-                    message.text
-                )
-    except aiogram.utils.exceptions.MessageTextIsEmpty:
-        pass
+    users = set(database.get_all_users())
+    msg = ""
+    for i in users:
+        try:
+            await bot.send_message(
+                chat_id=i[0],
+                text=message.html_text
+            )
+        except Exception as e:
+            user = database.get_user_by_id(int(i[0]))
+            msg += f"id = {user[0]} -- name = {user[1]} -- number = {user[2]}\n"
 
-    # await asyncio.gather(*tasks)
+    with open("rs.txt", "w") as f:
+        f.write(msg)
+    await message.answer_document(InputFile("rs.txt"), caption="Те до которых не дошла рассылка.")
+
     await message.answer("Рассылка завершена!")
-    users = None
+
     await state.finish()
 
 
