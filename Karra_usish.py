@@ -40,6 +40,10 @@ async def broadcast(message: types.Message, state: FSMContext):
         await message.reply("Вы не админ.")
 
 
+
+
+
+
 @dp.message_handler(commands=['all'])
 async def get_all(message: types.Message):
     users = database.get_all_data()
@@ -74,6 +78,18 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
 
     users = set(database.get_all_users())
     msg = ""
+    if message.video_note:
+        for i in users:
+            try:
+
+                await bot.send_video_note(
+                    chat_id=i[0],
+                    video_note=message.video_note.file_id
+                )
+            except Exception as e:
+                user = database.get_user_by_id(int(i[0]))
+                msg += f"id = {user[0]} -- name = {user[1]} -- number = {user[2]}\n"
+
     if message.photo:
         for i in users:
             try:
@@ -83,15 +99,16 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
                 )
             except Exception as e:
                 pass
-    for i in users:
-        try:
-            await bot.send_message(
-                chat_id=i[0],
-                text=message.html_text
-            )
-        except Exception as e:
-            user = database.get_user_by_id(int(i[0]))
-            msg += f"id = {user[0]} -- name = {user[1]} -- number = {user[2]}\n"
+    if message.text:
+        for i in users:
+            try:
+                await bot.send_message(
+                    chat_id=i[0],
+                    text=message.html_text
+                )
+            except Exception as e:
+                user = database.get_user_by_id(int(i[0]))
+                msg += f"id = {user[0]} -- name = {user[1]} -- number = {user[2]}\n"
 
     with open("rs.txt", "w") as f:
         f.write(msg)
