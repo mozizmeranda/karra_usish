@@ -78,6 +78,17 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
 
     users = set(database.get_all_users())
     msg = ""
+    if message.document:
+        for i in users:
+            try:
+                await bot.send_document(
+                    chat_id=i[0],
+                    document=message.document.file_id
+                )
+            except Exception as e:
+                user = database.get_user_by_id(int(i[0]))
+                msg += f"id = {user[0]} -- name = {user[1]} -- number = {user[2]}\n"
+
     if message.video_note:
         for i in users:
             try:
