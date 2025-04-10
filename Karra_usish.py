@@ -3,7 +3,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.utils import executor
 from aiogram.dispatcher.filters import CommandStart
-from states import Registration
+from states import Registration, Rs
 from utils import contact_save, create_contact, lead_create_without_landing
 from keyboards import contact_button, question1, question2, question3
 from config import *
@@ -54,6 +54,44 @@ async def get_all(message: types.Message):
     with open("users.txt", "w") as f:
         f.write(msg)
     await message.answer_document(InputFile(file_path))
+
+
+@dp.message_handler(commands=['rs_text'])
+async def rs_withtext(message: types.Message, state: FSMContext):
+    if message.from_user.id in [3325847, 6287458105, 827950639]:
+        await Rs.photo.set()
+        await message.reply("Пришли текст для рассылки")
+
+
+@dp.message_handler(content_types=types.ContentTypes.ANY, state=Rs.photo)
+async def get_file(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['photo'] = message.photo[-1].file_id
+    await Rs.text.set()
+    await message.reply("Send a text")
+
+
+@dp.message_handler(content_types=types.ContentTypes.ANY, state=Rs.text)
+async def get_text(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        users = set(database.get_all_users())
+        msg = ""
+        cap = message.text
+        for i in users:
+            try:
+                await bot.send_photo(
+                    chat_id=i[0],
+                    photo=data['photo'],
+                    caption=message.html_text
+                )
+            except Exception as e:
+                user = database.get_user_by_id(int(i[0]))
+                msg += f"id = {user[0]} -- name = {user[1]} -- number = {user[2]}\n"
+    await state.finish()
+
+
+
+
 
 
 @dp.message_handler(commands=['add'])
@@ -108,7 +146,6 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
                     chat_id=i[0],
                     photo=message.photo[-1].file_id,
                     caption=message.caption or "",
-                    parse_mode="HTML"
                 )
             except Exception as e:
                 user = database.get_user_by_id(int(i[0]))

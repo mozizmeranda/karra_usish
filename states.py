@@ -7,3 +7,8 @@ class Registration(StatesGroup):
     num_emploeyes = State()
     turnover = State()
     role = State()
+
+
+class Rs(StatesGroup):
+    photo = State()
+    text = State()
