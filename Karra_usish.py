@@ -106,10 +106,13 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
             try:
                 await bot.send_photo(
                     chat_id=i[0],
-                    photo=message.photo[-1].file_id
+                    photo=message.photo[-1].file_id,
+                    caption=message.caption or "",
+                    parse_mode="HTML"
                 )
             except Exception as e:
-                pass
+                user = database.get_user_by_id(int(i[0]))
+                msg += f"id = {user[0]} -- name = {user[1]} -- number = {user[2]}\n"
     if message.text:
         for i in users:
             try:
