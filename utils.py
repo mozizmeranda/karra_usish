@@ -49,6 +49,7 @@ def lead_create_without_landing(phone_number, name):
         pipeline_id=int(voronka_id),
     )
     contact = Contact.objects.get(query=phone_number)
+    # print(phone_number)
     lead.contacts.add(contact)
     lead.save()
 
