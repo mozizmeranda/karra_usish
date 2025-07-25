@@ -1,4 +1,6 @@
 import sqlite3 as sq
+import asyncpg
+import aiosqlite
 
 
 class Database:
@@ -51,11 +53,8 @@ class Database:
         sql = "SELECT * FROM Users WHERE id=?"
         data = self.execute(sql, (id,), fetchone=True)
         return data
-
+    
 
 database = Database()
-
-
-
 
 

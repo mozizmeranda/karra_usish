@@ -194,7 +194,7 @@ async def get_start(message: types.Message, state: FSMContext):
         database.insert_into(message.from_user.id, d[0], f"+{d[1]}")
 
         create_contact(d[0], d[1])
-        lead_create_without_landing(d[1], d[1])
+        lead_create_without_landing(d[0], d[1])
         await bot.delete_message(message.from_user.id, msg.message_id)
         await state.set_data(l)
     else:
@@ -234,6 +234,8 @@ async def get_number(message: types.Message, state: FSMContext):
 
 @dp.callback_query_handler(lambda x: x.data and x.data.startswith("q_"), state=Registration.num_emploeyes)
 async def get_num_emploeyes(call: types.CallbackQuery, state: FSMContext):
+    print(call.data)
+    await call.answer("Hii", show_alert=True)
     ans = call.data.split("_")[1]
     async with state.proxy() as data:
         data['num_emploeyes'] = ans
@@ -261,15 +263,15 @@ async def get_(call: types.CallbackQuery, state: FSMContext):
 
     async with state.proxy() as data:
         data['role'] = ans
-        msg = await call.answer("Илтимос, бироз кутинг ......")
+        msg = await call.answer("Илтимос, бироз кутинг ......", show_alert=True)
         contact_save(
             num_emploeyes=data['num_emploeyes'],
             turnover=data['turnover'],
             role=data['role'],
             number=data['number']
         )
-        # if data['from_landing'] == 0:
-        #     lead_create_without_landing(data['number'], data['number'])
+        if data['from_landing'] == 0:
+            lead_create_without_landing(data['number'], data['name'])
         # await bot.delete_message(call.message.from_user.id, msg.message_id)
         await call.message.answer("Жавобларингиз учун раҳмат! Биз ишонамизки, "
                                   "вебинаримиз айнан сиз учун мос. Вебинарда кўришгунча!")
