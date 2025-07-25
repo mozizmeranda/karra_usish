@@ -1,6 +1,6 @@
 import sqlite3 as sq
-import asyncpg
-import aiosqlite
+# import asyncpg
+# import aiosqlite
 
 
 class Database:
