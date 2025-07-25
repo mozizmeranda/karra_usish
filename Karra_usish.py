@@ -234,8 +234,6 @@ async def get_number(message: types.Message, state: FSMContext):
 
 @dp.callback_query_handler(lambda x: x.data and x.data.startswith("q_"), state=Registration.num_emploeyes)
 async def get_num_emploeyes(call: types.CallbackQuery, state: FSMContext):
-    print(call.data)
-    await call.answer("Hii", show_alert=True)
     ans = call.data.split("_")[1]
     async with state.proxy() as data:
         data['num_emploeyes'] = ans
