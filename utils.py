@@ -99,9 +99,9 @@ def create_lead(full_name: str, number):
     ]
 
     response = requests.post(con_url, headers=headers, data=json.dumps(data))
-    print(response.status_code)
+    # print(response.status_code)
     data = response.json()
-    print(data)
+    # print(data)
     con_id = data['_embedded']['contacts'][0]['id']
 
     url = "https://uzbekistangroup2024.amocrm.ru/api/v4/leads"
