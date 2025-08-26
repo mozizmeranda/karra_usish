@@ -31,12 +31,12 @@ class Database:
         return data
 
     def create_table(self):
-        sql = "CREATE TABLE IF NOT EXISTS Users(id INT, name TEXT, number TEXT)"
+        sql = "CREATE TABLE IF NOT EXISTS Users(id INT, name TEXT, number TEXT, landing TEXT)"
         self.execute(sql, commit=True)
 
-    def insert_into(self, id: int, name: str, number: str):
-        sql = "INSERT OR IGNORE INTO Users(id, name, number) VALUES (?, ?, ?)"
-        parameters = (id, name, number)
+    def insert_into(self, id: int, name: str, number: str, landing):
+        sql = "INSERT OR IGNORE INTO Users(id, name, number, landing) VALUES (?, ?, ?, ?)"
+        parameters = (id, name, number, landing)
         self.execute(sql, parameters=parameters, commit=True)
 
     def get_all_users(self):

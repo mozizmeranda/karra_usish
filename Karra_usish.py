@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.utils import executor
 from aiogram.dispatcher.filters import CommandStart
 from states import Registration, Rs
-from utils import contact_save, create_contact, lead_create_without_landing
+from utils import contact_save, create_contact, lead_create_without_landing, create_lead, contact_new_data
 from keyboards import contact_button, question1, question2, question3
 from config import *
 import asyncio
@@ -38,10 +38,6 @@ async def broadcast(message: types.Message, state: FSMContext):
         await message.reply("Введите текст для рассылки.")
     else:
         await message.reply("Вы не админ.")
-
-
-
-
 
 
 @dp.message_handler(commands=['all'])
@@ -174,6 +170,8 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
 async def get_start(message: types.Message, state: FSMContext):
     args = message.get_args()
     if args:
+        await message.answer_document("BQACAgIAAxkDAAM-aK2dVGpzjy8d0t16_0OrFfsCHe0AAvCFAAKUt3BJnvhn9u1OxUc2BA",
+                                      caption="Чек-лист")
         await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат! "
                              "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, "
                              "бизнинг Telegram гуруҳимизга қўшилинг: 🔗 https://t.me/+SloaN4FmJ54zMjBi")
@@ -183,17 +181,21 @@ async def get_start(message: types.Message, state: FSMContext):
             reply_markup=question1
         )
         msg = await message.answer("Илтимос, бироз кутинг ......")
+
         await Registration.num_emploeyes.set()
         d = args.split("--")
+        contact_id = create_lead(d[0], f'+{d[1]}')
         l = {
             "name": d[0],
             "number": f"+{d[1]}",
-            "from_landing": 1
+            "from_landing": 1,
+            "contact_id": contact_id
         }
-        database.insert_into(message.from_user.id, d[0], f"+{d[1]}")
+        database.insert_into(message.from_user.id, d[0], f"+{d[1]}", d[2])
 
-        create_contact(d[0], d[1])
-        lead_create_without_landing(d[0], d[1])
+
+        # create_contact(d[0], d[1])
+        # lead_create_without_landing(d[0], d[1])
         await bot.delete_message(message.from_user.id, msg.message_id)
         await state.set_data(l)
     else:
@@ -261,14 +263,16 @@ async def get_(call: types.CallbackQuery, state: FSMContext):
     async with state.proxy() as data:
         data['role'] = ans
         msg = await call.answer("Илтимос, бироз кутинг ......", show_alert=True)
-        contact_save(
-            num_emploeyes=data['num_emploeyes'],
-            turnover=data['turnover'],
-            role=data['role'],
-            number=data['number']
-        )
-        if data['from_landing'] == 0:
-            lead_create_without_landing(data['number'], data['name'])
+        # contact_save(
+        #     num_emploeyes=data['num_emploeyes'],
+        #     turnover=data['turnover'],
+        #     role=data['role'],
+        #     number=data['number']
+        # )
+        contact_new_data(data['contact_id'], data['num_emploeyes'], data['turnover'], data['number'])
+
+        # if data['from_landing'] == 0:
+        #     lead_create_without_landing(data['number'], data['name'])
         # await bot.delete_message(call.message.from_user.id, msg.message_id)
         await call.message.answer("Жавобларингиз учун раҳмат! Биз ишонамизки, "
                                   "вебинаримиз айнан сиз учун мос. Вебинарда кўришгунча!")
