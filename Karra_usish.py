@@ -172,9 +172,7 @@ async def get_start(message: types.Message, state: FSMContext):
     if args:
         await message.answer_document("BQACAgIAAxkDAAM-aK2dVGpzjy8d0t16_0OrFfsCHe0AAvCFAAKUt3BJnvhn9u1OxUc2BA",
                                       caption="Чек-лист")
-        await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат! "
-                             "Муҳим маълумотларни йўқотиб қўймаслик учун, илтимос, "
-                             "бизнинг Telegram гуруҳимизга қўшилинг: 🔗 https://t.me/+SloaN4FmJ54zMjBi")
+        await message.answer("📢 Рўйхатдан ўтганингиз учун рахмат!")
         await message.answer(
             " Бизнинг вебинарга яхшироқ "
             "тайёргарлик кўриш учун, компаниянгизда нечта ходим ишлайди?",
