@@ -114,7 +114,7 @@ def create_lead(full_name: str, number):
     ]
 
     response = requests.post(url, headers=headers, data=json.dumps(lead_data))
-    print(response.status_code)
+    # print(response.status_code)
 
     return data['_embedded']['contacts'][0]['id']
 
@@ -153,6 +153,6 @@ def contact_new_data(contact_id, num_emploeyes, turnover, role):
 
     response = requests.patch(url, headers=headers, data=json.dumps(data))
 
-    print(response.status_code)
-    print(response.json())
+    # print(response.status_code)
+    # print(response.json())
 
