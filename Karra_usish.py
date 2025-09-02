@@ -42,7 +42,8 @@ async def broadcast(message: types.Message, state: FSMContext):
 
 @dp.message_handler(commands=['all'])
 async def get_all(message: types.Message):
-    users = database.get_all_data()
+    slot = message.text.split(" ")[1]
+    users = database.get_all_data(slot)
     msg = ""
     file_path = "users.txt"
     for i in users:
@@ -170,27 +171,9 @@ async def broadcast_handler(message: types.Message, state: FSMContext):
 async def get_start(message: types.Message, state: FSMContext):
     args = message.get_args()
     if args:
-        greet = """<b>Сиз вебинарга муваффақиятли рўйхатдан ўтдингиз!</b>
-
-<b>📅 Сана:</b> 30 август
-<b>⏰ Вақт:</b> 16:00 (Тошкент)
-
-🎁 Сизнинг совға:
-<i>Чек-лист</i> — «Бизнесни масштаблашга тайёрлигини текшириш учун 39 савол»
-
-
-🚀 Вебинарда сиз билиб оласиз, Ўзбекистон тадбиркорлари қандай қилиб:
-✅ фойдани бир йилда икки бараварга оширишган
-✅ 24/7 ишлашдан қутулишган
-✅ бошқариладиган жамоалар тузишган
-
-📖 Чек-листни кўриб чиқинг — бу бизнесингиздаги заиф нуқталарни топишнинг энг тезкор усули!
-
-———
-<b>Вебринар канал: 👇
-https://t.me/+N01ajaO9ptU2Zjcy</b>"""
-        await message.answer_document("BQACAgIAAxkDAAM-aK2dVGpzjy8d0t16_0OrFfsCHe0AAvCFAAKUt3BJnvhn9u1OxUc2BA",
-                                      caption="Чек-лист")
+        greet = """<b>ССЫЛКА НА БИЗОН</b>"""
+        # await message.answer_document("BQACAgIAAxkDAAM-aK2dVGpzjy8d0t16_0OrFfsCHe0AAvCFAAKUt3BJnvhn9u1OxUc2BA",
+        #                               caption="Чек-лист")
         # await bot.send_document(chat_id=message.from_user.id, document="BQACAgIAAxkDAAM-aK2dVGpzjy8d0t16_0OrFfsCHe0AAvCFAAKUt3BJnvhn9u1OxUc2BA")
         await message.answer(greet)
         await message.answer(
@@ -202,6 +185,8 @@ https://t.me/+N01ajaO9ptU2Zjcy</b>"""
 
         await Registration.num_emploeyes.set()
         d = args.split("--")
+        print("d 3- ", d)
+        database.insert_into(message.from_user.id, d[0], f"+{d[1]}", d[2], d[3])
         contact_id = create_lead(d[0], f'+{d[1]}')
         l = {
             "name": d[0],
@@ -209,7 +194,7 @@ https://t.me/+N01ajaO9ptU2Zjcy</b>"""
             "from_landing": 1,
             "contact_id": contact_id
         }
-        database.insert_into(message.from_user.id, d[0], f"+{d[1]}", d[2])
+
 
 
         # create_contact(d[0], d[1])

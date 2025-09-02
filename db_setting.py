@@ -31,12 +31,12 @@ class Database:
         return data
 
     def create_table(self):
-        sql = "CREATE TABLE IF NOT EXISTS Users(id INT, name TEXT, number TEXT, landing TEXT)"
+        sql = "CREATE TABLE IF NOT EXISTS Users(id INT, name TEXT, number TEXT, landing TEXT, time_slot TEXT)"
         self.execute(sql, commit=True)
 
-    def insert_into(self, id: int, name: str, number: str, landing):
-        sql = "INSERT OR IGNORE INTO Users(id, name, number, landing) VALUES (?, ?, ?, ?)"
-        parameters = (id, name, number, landing)
+    def insert_into(self, id: int, name: str, number: str, landing, time_slot):
+        sql = "INSERT OR IGNORE INTO Users(id, name, number, landing, time_slot) VALUES (?, ?, ?, ?, ?)"
+        parameters = (id, name, number, landing, time_slot)
         self.execute(sql, parameters=parameters, commit=True)
 
     def get_all_users(self):
@@ -44,9 +44,10 @@ class Database:
         data = self.execute(sql, fetchall=True)
         return data
 
-    def get_all_data(self):
-        sql = "SELECT * FROM Users"
-        data = self.execute(sql, fetchall=True)
+    def get_all_data(self, time_slot):
+        sql = "SELECT * FROM Users WHERE time_slot=?"
+        params = (time_slot,)
+        data = self.execute(sql, parameters=(time_slot,), fetchall=True)
         return data
 
     def get_user_by_id(self, id: int):
